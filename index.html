@@ -112,17 +112,38 @@
       var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
-              }).then((unityInstance) => {
-                loadingBar.style.display = "none";
-                fullscreenButton.onclick = () => {
-                  unityInstance.SetFullscreen(1);
-                };
-              }).catch((message) => {
-                alert(message);
-              });
-            };
+        navigator.mediaDevices
+          .getUserMedia({ 
+            video: {
+              width: {
+                min: 1280,
+                ideal: 1920,
+                max: 2560,
+              },
+              height: {
+                min: 720,
+                ideal: 1080,
+                max: 1440
+              },
+              facingMode: 'environment'
+            }
+          })
+          .then((stream) => {
+            createUnityInstance(canvas, config, (progress) => {
+              progressBarFull.style.width = 100 * progress + "%";
+                  }).then((unityInstance) => {
+                    loadingBar.style.display = "none";
+                    fullscreenButton.onclick = () => {
+                      unityInstance.SetFullscreen(1);
+                    };
+                  }).catch((message) => {
+                    alert(message);
+                  });
+          })
+          .catch((err) => {
+            alert(err);
+          });
+      };
 
       document.body.appendChild(script);
 
