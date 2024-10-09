@@ -139,9 +139,9 @@
         const buildUrl = "Build";
         const loaderUrl = buildUrl + "/bb0d9ecdb05db3e84da20bd14a4f84dc.loader.js";
         const config = {
-            dataUrl: buildUrl + "/3e906679a28b264549584082b18d9f39.data.br",
-            frameworkUrl: buildUrl + "/9d0523dc9e6668675c9daefe292586cc.framework.js.br",
-            codeUrl: buildUrl + "/3164894571628b40e6f021ef5a0013a4.wasm.br",
+            dataUrl: buildUrl + "/44aed5674bd2e6873677345d265fa74a.data.br",
+            frameworkUrl: buildUrl + "/6ff524ea20a51dfbd0f576817bf5b127.framework.js.br",
+            codeUrl: buildUrl + "/18c1e211d50ca6d2960cb9fa3e2fe521.wasm.br",
             streamingAssetsUrl: "StreamingAssets",
             companyName: "DefaultCompany",
             productName: "Escape",
@@ -149,7 +149,10 @@
         //Useful when used along with Filename as Hashes option
             cacheControl: function (url) {
             // typically includes: .data, .bundle, .zpt
-            ZAPPAR_WEBGL_CACHING   
+            if (url.match(/\.data/) || url.match(/\.bundle/) || url.match(/\.zpt/)) {
+             return "immutable";
+}
+   
             if (url.match(/\.mp4/) || url.match(/\.custom/) || url.match(/\.zbin/)) {
                 return "immutable";
             }   
@@ -181,7 +184,7 @@
         //script.onload = () => { CreateUnityLoader();   };
         document.body.appendChild(script);
 
-        ZAPPAR_PERMISSIONS_IMPLEMENTATION
+        window.zappar.permission_request_ui_promise().then(WaitForZCVLoad);
 
         function WaitForZCVLoad() {
             if (zappar.loaded()) {
